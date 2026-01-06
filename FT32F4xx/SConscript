@@ -1,0 +1,96 @@
+import rtconfig
+from building import *
+
+# get current directory
+cwd = GetCurrentDir()
+
+# The set of source files associated with this SConscript file.
+src = Split("""
+src/ft32f4xx_comp.c
+src/ft32f4xx_crc.c
+src/ft32f4xx_crs.c
+src/ft32f4xx_debug.c
+src/ft32f4xx_dma.c
+src/ft32f4xx_exti.c
+src/ft32f4xx_gpio.c
+src/ft32f4xx_iwdg.c
+src/ft32f4xx_misc.c
+src/ft32f4xx_opamp.c
+src/ft32f4xx_pwr.c
+src/ft32f4xx_rcc.c
+src/ft32f4xx_syscfg.c
+src/ft32f4xx_tim.c
+""")
+
+if GetDepend(['RT_USING_ADC']):
+    src += ['src/ft32f4xx_adc.c']
+
+if GetDepend(['RT_USING_DAC']):
+    src += ['src/ft32f4xx_dac.c']
+
+if GetDepend(['RT_USING_ECAP']):
+    src += ['src/ft32f4xx_ecap.c']
+
+if GetDepend(['RT_USING_EPWM']):
+    src += ['src/ft32f4xx_epwm.c']
+
+if GetDepend(['RT_USING_EQEP']):
+    src += ['src/ft32f4xx_eqep.c']
+
+if GetDepend(['RT_USING_FDCAN']):
+    src += ['src/ft32f4xx_fdcan.c']
+
+if GetDepend(['RT_USING_FMC']):
+    src += ['src/ft32f4xx_fmc.c']
+
+if GetDepend(['RT_USING_SERIAL']):
+    src += ['src/ft32f4xx_usart.c']
+    src += ['src/ft32f4xx_uart.c']
+
+if GetDepend(['RT_USING_I2C']):
+    src += ['src/ft32f4xx_i2c.c']
+
+if GetDepend(['RT_USING_I2S']):
+    src += ['src/ft32f4xx_i2s.c']
+
+if GetDepend(['RT_USING_LPTIM']):
+    src += ['src/ft32f4xx_lptim.c']
+
+if GetDepend(['RT_USING_QSPI']):
+    src += ['src/ft32f4xx_qspi.c']
+
+if GetDepend(['RT_USING_RNG']):
+    src += ['src/ft32f4xx_rng.c']
+
+if GetDepend(['RT_USING_SPI']):
+    src += ['src/ft32f4xx_spi.c']
+
+if GetDepend(['RT_USING_RTC']):
+    src += ['src/ft32f4xx_rtc.c']
+
+if GetDepend(['RT_USING_SDIO']):
+    src += ['src/ft32f4xx_sdio.c']
+
+if GetDepend(['RT_USING_SPDIF']):
+    src += ['src/ft32f4xx_spdif.c']
+
+if GetDepend(['RT_USING_WDT']):
+    src += ['src/ft32f4xx_wwdg.c']
+
+if GetDepend(['RT_USING_SSI']):
+    src += ['src/ft32f4xx_ssi.c']
+
+if GetDepend(['BSP_USING_ON_CHIP_FLASH']):
+    src += ['src/ft32f4xx_flash.c']
+
+if GetDepend(['BSP_USING_ETH']):
+    src += ['src/ft32f4xx_eth.c']
+
+path = [cwd + '/inc',
+    cwd + '/templates/inc']
+
+CPPDEFINES = ['USE_STDPERIPH_DRIVER']
+
+group = DefineGroup('Libraries', src, depend = ['SOC_SERIES_FT32F4'], CPPPATH = path, CPPDEFINES = CPPDEFINES)
+
+Return('group')
